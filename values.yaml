@@ -196,6 +196,7 @@ api:
   #           operator: In
   #           values:
   #           - openpanel
+  topologySpreadConstraints: []
   # Horizontal Pod Autoscaler (HPA) configuration
   hpa:
     enabled: false
@@ -240,6 +241,7 @@ dashboard:
   #           operator: In
   #           values:
   #           - openpanel
+  topologySpreadConstraints: []
   # Horizontal Pod Autoscaler (HPA) configuration
   hpa:
     enabled: false
@@ -284,6 +286,7 @@ worker:
   #           operator: In
   #           values:
   #           - openpanel
+  topologySpreadConstraints: []
   # Horizontal Pod Autoscaler (HPA) configuration
   hpa:
     enabled: false
