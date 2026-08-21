@@ -64,6 +64,9 @@ externalPostgresql:
   password: "<postgres_password>"  # Change this!
   database: "<database_name>"
   schema: public
+  existingSecret:
+    name: ""
+    uriKey: uri
 
 # Redis Configuration
 redis:

@@ -58,13 +58,23 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
+{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
+                  name: {{ .Values.externalPostgresql.existingSecret.name }}
+                  key: {{ .Values.externalPostgresql.existingSecret.uriKey }}
+{{- else }}
                   name: openpanel-secrets
                   key: DATABASE_URL
+{{- end }}
             - name: DATABASE_URL_DIRECT
               valueFrom:
                 secretKeyRef:
+{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
+                  name: {{ .Values.externalPostgresql.existingSecret.name }}
+                  key: {{ .Values.externalPostgresql.existingSecret.uriKey }}
+{{- else }}
                   name: openpanel-secrets
                   key: DATABASE_URL_DIRECT
+{{- end }}
             - name: REDIS_URL
               valueFrom:
                 secretKeyRef:
