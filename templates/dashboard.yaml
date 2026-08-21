@@ -75,6 +75,8 @@ spec:
                 configMapKeyRef:
                   name: openpanel-config
                   key: API_URL
+            - name: API_URL_SSR
+              value: "http://{{ .Values.api.service.name }}:{{ .Values.api.service.port }}"
             - name: DASHBOARD_URL
               valueFrom:
                 configMapKeyRef:
