@@ -317,6 +317,9 @@ config:
 
 # Secrets Configuration
 secrets:
+  existingSecret:
+    name: ""
+    cookieSecretKey: COOKIE_SECRET
   # REQUIRED: Generate with: openssl rand -base64 32
   cookieSecret: "CHANGE_ME_GENERATE_A_RANDOM_32_CHAR_STRING"
   

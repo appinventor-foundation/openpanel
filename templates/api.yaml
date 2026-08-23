@@ -113,8 +113,13 @@ spec:
             - name: COOKIE_SECRET
               valueFrom:
                 secretKeyRef:
+{{- if .Values.secrets.existingSecret.name }}
+                  name: {{ .Values.secrets.existingSecret.name }}
+                  key: {{ .Values.secrets.existingSecret.cookieSecretKey }}
+{{- else }}
                   name: openpanel-secrets
                   key: COOKIE_SECRET
+{{- end }}
             - name: ALLOW_REGISTRATION
               valueFrom:
                 configMapKeyRef:
