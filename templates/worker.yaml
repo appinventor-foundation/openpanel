@@ -95,6 +95,22 @@ spec:
                   key: API_URL
             - name: WORKER_PORT
               value: {{ .Values.worker.service.port | quote }}
+{{- if .Values.secrets.resendApiKey }}
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: RESEND_API_KEY
+                  optional: true
+{{- end }}
+{{- if .Values.secrets.emailSender }}
+            - name: EMAIL_SENDER
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: EMAIL_SENDER
+                  optional: true
+{{- end }}
           livenessProbe:
             httpGet:
               path: /healthcheck
