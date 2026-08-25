@@ -326,6 +326,11 @@ secrets:
   # Email configuration (optional)
   resendApiKey: "<resend_api_key>"
   emailSender: "<email_sender>"
+  smtpHost: ""
+  smtpPort: ""
+  smtpSecure: ""
+  smtpUser: ""
+  smtpPass: ""
   
   # AI features (optional)
   openaiApiKey: "<openai_api_key>"

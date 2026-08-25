@@ -148,6 +148,46 @@ spec:
                   key: EMAIL_SENDER
                   optional: true
 {{- end }}
+{{- if .Values.secrets.smtpHost }}
+            - name: SMTP_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: SMTP_HOST
+                  optional: true
+{{- end }}
+{{- if .Values.secrets.smtpPort }}
+            - name: SMTP_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: SMTP_PORT
+                  optional: true
+{{- end }}
+{{- if .Values.secrets.smtpSecure }}
+            - name: SMTP_SECURE
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: SMTP_SECURE
+                  optional: true
+{{- end }}
+{{- if .Values.secrets.smtpUser }}
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: SMTP_USER
+                  optional: true
+{{- end }}
+{{- if .Values.secrets.smtpPass }}
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: SMTP_PASS
+                  optional: true
+{{- end }}
 {{- if .Values.secrets.openaiApiKey }}
             - name: OPENAI_API_KEY
               valueFrom:
