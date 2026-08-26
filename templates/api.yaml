@@ -276,10 +276,12 @@ spec:
               # Wait for Redis
 {{- if .Values.redis.enabled }}
               until nc -z {{ .Values.redis.service.name }} {{ .Values.redis.service.port }}; do
+{{- else }}
+              until nc -z {{ .Values.externalRedis.host }} {{ .Values.externalRedis.port }}; do
+{{- end }}
                 echo "Waiting for Redis..."
                 sleep 2
               done
-{{- end }}
               # Wait for ClickHouse
 {{- if .Values.clickhouse.enabled }}
               until nc -z {{ .Values.clickhouse.service.name }} {{ .Values.clickhouse.service.httpPort }}; do
