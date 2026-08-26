@@ -14,6 +14,7 @@ data:
   # Application settings
   NODE_ENV: {{ .Values.config.nodeEnv | quote }}
   SELF_HOSTED: {{ .Values.config.selfHosted | quote }}
+  CLICKHOUSE_CLUSTER: {{ .Values.config.clickhouseCluster | quote }}
 
   # Registration settings
   ALLOW_REGISTRATION: {{ .Values.config.allowRegistration | quote }}

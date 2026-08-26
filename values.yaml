@@ -304,6 +304,7 @@ config:
   # Application settings
   nodeEnv: "production"
   selfHosted: "true"
+  clickhouseCluster: "false"
   
   # Registration settings
   allowRegistration: "true"

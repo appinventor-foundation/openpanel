@@ -78,6 +78,11 @@ spec:
                 secretKeyRef:
                   name: openpanel-secrets
                   key: CLICKHOUSE_URL
+            - name: CLICKHOUSE_CLUSTER
+              valueFrom:
+                configMapKeyRef:
+                  name: openpanel-config
+                  key: CLICKHOUSE_CLUSTER
             - name: API_URL
               valueFrom:
                 configMapKeyRef:
