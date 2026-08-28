@@ -21,6 +21,8 @@ kind: Deployment
 metadata:
   name: {{ .Values.api.service.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   labels:
     app: op-api
     component: api

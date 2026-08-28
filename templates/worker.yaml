@@ -21,6 +21,8 @@ kind: Deployment
 metadata:
   name: {{ .Values.worker.service.name }}
   namespace: {{ .Release.Namespace }}
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   labels:
     app: op-worker
     component: worker

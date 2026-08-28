@@ -11,7 +11,8 @@ metadata:
     app: openpanel
     component: migrations
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
+    argocd.argoproj.io/hook: Sync
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   template:
     metadata:
@@ -38,45 +39,50 @@ spec:
               CI=true pnpm -r run migrate:deploy
           env:
             - name: NODE_ENV
-              value: {{ .Values.config.nodeEnv | quote }}
+              valueFrom:
+                configMapKeyRef:
+                  name: openpanel-config
+                  key: NODE_ENV
             - name: SELF_HOSTED
-              value: {{ .Values.config.selfHosted | quote }}
+              valueFrom:
+                configMapKeyRef:
+                  name: openpanel-config
+                  key: SELF_HOSTED
             - name: DATABASE_URL
-{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
               valueFrom:
                 secretKeyRef:
+{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
                   name: {{ .Values.externalPostgresql.existingSecret.name }}
                   key: {{ .Values.externalPostgresql.existingSecret.uriKey }}
-{{- else if .Values.postgresql.enabled }}
-              value: "postgresql://{{ .Values.postgresql.user }}:{{ .Values.postgresql.password }}@{{ .Values.postgresql.service.name }}:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.database }}?schema=public"
 {{- else }}
-              value: "postgresql://{{ .Values.externalPostgresql.user }}:{{ .Values.externalPostgresql.password }}@{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}?schema={{ .Values.externalPostgresql.schema }}"
+                  name: openpanel-secrets
+                  key: DATABASE_URL
 {{- end }}
             - name: DATABASE_URL_DIRECT
-{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
               valueFrom:
                 secretKeyRef:
+{{- if and (not .Values.postgresql.enabled) .Values.externalPostgresql.existingSecret.name }}
                   name: {{ .Values.externalPostgresql.existingSecret.name }}
                   key: {{ .Values.externalPostgresql.existingSecret.uriKey }}
-{{- else if .Values.postgresql.enabled }}
-              value: "postgresql://{{ .Values.postgresql.user }}:{{ .Values.postgresql.password }}@{{ .Values.postgresql.service.name }}:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.database }}?schema=public"
 {{- else }}
-              value: "postgresql://{{ .Values.externalPostgresql.user }}:{{ .Values.externalPostgresql.password }}@{{ .Values.externalPostgresql.host }}:{{ .Values.externalPostgresql.port }}/{{ .Values.externalPostgresql.database }}?schema={{ .Values.externalPostgresql.schema }}"
+                  name: openpanel-secrets
+                  key: DATABASE_URL_DIRECT
 {{- end }}
             - name: REDIS_URL
-{{- if .Values.redis.enabled }}
-              value: "redis://{{ .Values.redis.service.name }}:{{ .Values.redis.service.port }}"
-{{- else }}
-              value: "redis://{{ .Values.externalRedis.host }}:{{ .Values.externalRedis.port }}"
-{{- end }}
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: REDIS_URL
             - name: CLICKHOUSE_URL
-{{- if .Values.clickhouse.enabled }}
-              value: "http://{{ .Values.clickhouse.service.name }}:{{ .Values.clickhouse.service.httpPort }}/{{ .Values.clickhouse.database }}"
-{{- else }}
-              value: "http://{{ .Values.externalClickhouse.host }}:{{ .Values.externalClickhouse.port }}/{{ .Values.externalClickhouse.database }}"
-{{- end }}
+              valueFrom:
+                secretKeyRef:
+                  name: openpanel-secrets
+                  key: CLICKHOUSE_URL
             - name: CLICKHOUSE_CLUSTER
-              value: {{ .Values.config.clickhouseCluster | quote }}
+              valueFrom:
+                configMapKeyRef:
+                  name: openpanel-config
+                  key: CLICKHOUSE_CLUSTER
       initContainers:
         - name: wait-for-databases
           image: busybox:1.36
