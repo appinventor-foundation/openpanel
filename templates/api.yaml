@@ -51,8 +51,6 @@ spec:
             - sh
             - -c
             - |
-              echo 'Running migrations...'
-              CI=true pnpm -r run migrate:deploy
               pnpm start
           env:
             - name: NODE_ENV
